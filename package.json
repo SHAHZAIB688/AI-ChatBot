@@ -1,16 +1,23 @@
 {
   "name": "ai-chatbot",
   "version": "1.0.0",
-  "description": "",
-  "main": "script.js",
+  "description": "AI Chatbot powered by Groq API",
+  "main": "Backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node Backend/server.js"
   },
-  "keywords": [],
+  "keywords": ["ai", "chatbot", "groq", "express"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHAHZAIB688/AI-ChatBot.git"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.3.1",
