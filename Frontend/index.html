@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova AI Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="app">
+        <main class="shell">
+
+            <aside class="sidebar">
+                <div class="sidebar__header">
+                    <h2>Chats</h2>
+                    <button class="ghost" id="newChat">+ New</button>
+                </div>
+                <ul id="chatList" class="chat-list"></ul>
+                <button class="danger" id="deleteChats">Delete all chats</button>
+            </aside>
+
+            <section class="chat-panel">
+                <div class="chat-panel__topbar">
+                    <div class="brand">
+                        <div class="logo">AI</div>
+                        <div>
+                            <p class="eyebrow">Groq powered</p>
+                            <h1>Nova AI Assistant</h1>
+                        </div>
+                    </div>
+                    <div class="status">
+                        <span class="dot online" id="statusDot"></span>
+                        <span id="statusLabel">Ready</span>
+                    </div>
+                </div>
+                <div class="chat-panel__header">
+                    <div>
+                        <p class="eyebrow">Active Chat</p>
+                        <h2 id="chatTitle">New conversation</h2>
+                    </div>
+                    <div class="badge">Nova AI · Groq Llama3</div>
+                </div>
+
+                <div id="messages" class="messages"></div>
+
+                <form class="composer" id="messageForm">
+                    <textarea id="userInput" name="message" rows="2" autocomplete="off" placeholder="Ask anything..."></textarea>
+                    <button id="sendBtn" type="submit">Send</button>
+                </form>
+                <p class="hint">Press Enter to send · Shift + Enter for new line</p>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
