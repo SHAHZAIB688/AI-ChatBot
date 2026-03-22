@@ -7,7 +7,8 @@ const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fet
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, "../Frontend")));
 
 const API_KEY = process.env.GROQ_API_KEY;
 // Groq deprecated older llama3-8b; use a current recommended default.
@@ -48,6 +49,11 @@ app.post("/chat", async (req, res) => {
         console.error("Groq API error:", error);
         return res.status(500).json({ error: "Failed to reach AI service." });
     }
+});
+
+// Fallback to index.html for client-side routing
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../Frontend/index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
