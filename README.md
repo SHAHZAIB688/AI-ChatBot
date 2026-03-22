@@ -147,4 +147,4 @@ ISC – free to use and modify.
 
 - [Groq](https://groq.com) for the lightning‑fast inference API.
 - [Express](https://expressjs.com) for the backend framework.
-- [Render](https://render.com) for the generous free hosting tier.
+- [Railway](https://railway.com) for the generous free hosting tier.
