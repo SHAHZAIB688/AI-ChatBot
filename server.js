@@ -7,8 +7,8 @@ const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fet
 const app = express();
 app.use(cors());
 app.use(express.json());
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, "../Frontend")));
+// Serve frontend static files from current directory
+app.use(express.static(__dirname));
 
 const API_KEY = process.env.GROQ_API_KEY;
 // Groq deprecated older llama3-8b; use a current recommended default.
@@ -53,7 +53,7 @@ app.post("/chat", async (req, res) => {
 
 // Fallback to index.html for client-side routing
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Frontend/index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
