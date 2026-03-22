@@ -1,5 +1,6 @@
 const STORAGE_KEY = "groq_chats_v2";
-const API_BASE = window.API_BASE || (location.port === "3000" ? "" : "http://localhost:3000");
+const SIDEBAR_STATE_KEY = "sidebar_state";
+const API_BASE = window.API_BASE || (location.protocol === 'file:' ? 'http://localhost:3000' : '');
 const messagesEl = document.getElementById("messages");
 const chatListEl = document.getElementById("chatList");
 const userInputEl = document.getElementById("userInput");
@@ -10,6 +11,9 @@ const deleteChatsBtn = document.getElementById("deleteChats");
 const chatTitleEl = document.getElementById("chatTitle");
 const statusDot = document.getElementById("statusDot");
 const statusLabel = document.getElementById("statusLabel");
+const sidebarToggle = document.getElementById("sidebarToggle");
+const shell = document.querySelector(".shell");
+const sidebarOverlay = document.querySelector(".sidebar-overlay");
 
 let chats = []; 
 let activeChatId = null;
@@ -17,6 +21,70 @@ let isSending = false;
 let typingEl = null;
 let serverConfigured = true;
 let typewriterActive = false;
+let sidebarVisible = true;
+
+// Sidebar state management
+const updateSidebarState = (visible) => {
+    sidebarVisible = visible;
+    if (visible) {
+        shell.classList.remove("sidebar-hidden");
+    } else {
+        shell.classList.add("sidebar-hidden");
+    }
+    localStorage.setItem(SIDEBAR_STATE_KEY, JSON.stringify(visible));
+};
+
+// Initialize sidebar state
+try {
+    const savedState = localStorage.getItem(SIDEBAR_STATE_KEY);
+    if (savedState !== null) {
+        sidebarVisible = JSON.parse(savedState);
+    } else {
+        // Default: show on desktop, hide on mobile
+        const isMobile = window.innerWidth <= 960;
+        sidebarVisible = !isMobile;
+    }
+    updateSidebarState(sidebarVisible);
+} catch (e) {
+    console.warn("Error loading sidebar state", e);
+}
+
+// Sidebar toggle event
+if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        updateSidebarState(!sidebarVisible);
+    });
+}
+
+// Close sidebar when clicking overlay (mobile only)
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", () => {
+        const isMobile = window.innerWidth <= 960;
+        if (isMobile) {
+            updateSidebarState(false);
+        }
+    });
+}
+
+// Close sidebar when clicking on a chat item (mobile only)
+document.addEventListener('click', (e) => {
+    const isMobile = window.innerWidth <= 960;
+    if (isMobile && sidebarVisible && e.target.closest('.chat-item')) {
+        // Small delay to allow chat selection to process
+        setTimeout(() => updateSidebarState(false), 100);
+    }
+});
+
+// Update sidebar on window resize
+window.addEventListener("resize", () => {
+    const isMobile = window.innerWidth <= 960;
+    // Auto-hide sidebar when switching from desktop to mobile
+    if (isMobile && sidebarVisible && window.innerWidth <= 960) {
+        // Keep sidebar hidden on mobile by default
+        updateSidebarState(false);
+    }
+});
 
 // hydrate chats defensively
 try {

@@ -5,7 +5,12 @@ const cors = require("cors");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
+}));
 app.use(express.json());
 // Serve frontend static files from current directory
 app.use(express.static(__dirname));

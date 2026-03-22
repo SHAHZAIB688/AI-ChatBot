@@ -58,6 +58,42 @@ body {
     margin-bottom: 16px;
 }
 
+.topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 12px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sidebar-toggle:hover {
+    border-color: var(--primary);
+    color: #fff;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.sidebar-toggle svg {
+    stroke: currentColor;
+}
+
+.desktop-only {
+    display: block;
+}
+
 .brand {
     display: flex;
     gap: 14px;
@@ -124,6 +160,35 @@ h1 {
     flex: 1;
     min-height: 0;
     height: calc(100vh - 120px);
+    position: relative;
+}
+
+.sidebar {
+    background: linear-gradient(160deg, var(--card), var(--panel));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Desktop sidebar toggle */
+.shell.sidebar-hidden .sidebar {
+    transform: translateX(-100%);
+    opacity: 0;
+    position: absolute;
+    width: 300px;
+    z-index: 100;
+}
+
+.shell.sidebar-hidden .chat-panel {
+    grid-column: 1 / -1;
 }
 
 .sidebar {
@@ -246,19 +311,52 @@ h1 {
 }
 
 .chat-panel__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
+    display: none;
 }
 
 .badge {
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 13px;
+    display: none;
+}
+
+/* Adjust topbar for chat title */
+.chat-panel__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.brand {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex: 1;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-text h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+@media (max-width: 960px) {
+    .brand-text h1 {
+        font-size: 18px;
+        max-width: 200px;
+    }
+    
+    .brand {
+        gap: 10px;
+    }
 }
 
 .messages {
@@ -417,9 +515,97 @@ h1 {
 @media (max-width: 960px) {
     .shell {
         grid-template-columns: 1fr;
+        gap: 0;
+        position: relative;
+        overflow: hidden;
     }
 
     .sidebar {
-        order: 2;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100%;
+        z-index: 1000;
+        border-radius: 0;
+        border-right: 1px solid var(--border);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        margin-top: 0;
+        max-height: none;
+    }
+
+    .shell.sidebar-hidden .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .shell:not(.sidebar-hidden) .sidebar {
+        transform: translateX(0);
+    }
+
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+    }
+
+    .shell:not(.sidebar-hidden) .sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .desktop-only {
+        display: none !important;
+    }
+
+    .brand-text .eyebrow {
+        display: none;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .topbar-controls {
+        gap: 8px;
+    }
+
+    .sidebar-toggle {
+        width: 40px;
+        height: 40px;
+        display: flex !important;
+    }
+}
+
+@media (min-width: 961px) {
+    .sidebar-toggle {
+        display: flex;
+        width: 40px;
+        height: 40px;
+    }
+
+    .sidebar-overlay {
+        display: none;
+    }
+
+    /* Desktop sidebar hides by sliding out */
+    .shell.sidebar-hidden .sidebar {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    .shell:not(.sidebar-hidden) .sidebar {
+        transform: translateX(0);
+        opacity: 1;
     }
 }

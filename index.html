@@ -21,27 +21,28 @@
                 <ul id="chatList" class="chat-list"></ul>
                 <button class="danger" id="deleteChats">Delete all chats</button>
             </aside>
+            <div class="sidebar-overlay"></div>
 
             <section class="chat-panel">
                 <div class="chat-panel__topbar">
                     <div class="brand">
                         <div class="logo">AI</div>
-                        <div>
-                            <p class="eyebrow">Groq powered</p>
-                            <h1>Nova AI Assistant</h1>
+                        <div class="brand-text">
+                            <p class="eyebrow desktop-only">Groq powered</p>
+                            <h1 id="chatTitle">New conversation</h1>
                         </div>
                     </div>
-                    <div class="status">
-                        <span class="dot online" id="statusDot"></span>
-                        <span id="statusLabel">Ready</span>
+                    <div class="topbar-controls">
+                        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12h18M3 6h18M3 18h18"/>
+                            </svg>
+                        </button>
+                        <div class="status desktop-only">
+                            <span class="dot online" id="statusDot"></span>
+                            <span id="statusLabel">Ready</span>
+                        </div>
                     </div>
-                </div>
-                <div class="chat-panel__header">
-                    <div>
-                        <p class="eyebrow">Active Chat</p>
-                        <h2 id="chatTitle">New conversation</h2>
-                    </div>
-                    <div class="badge">Nova AI · Groq Llama3</div>
                 </div>
 
                 <div id="messages" class="messages"></div>
