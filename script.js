@@ -1,6 +1,14 @@
 const STORAGE_KEY = "groq_chats_v2";
 const SIDEBAR_STATE_KEY = "sidebar_state";
-const API_BASE = window.API_BASE || (location.protocol === 'file:' ? 'http://localhost:3000' : '');
+const API_BASE = window.API_BASE || (() => {
+    // Always use localhost:3000 for API when running locally
+    // This handles both file:// protocol and other local servers (like Live Server on port 5500)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    }
+    // For production/deployment, use relative path
+    return '';
+})();
 const messagesEl = document.getElementById("messages");
 const chatListEl = document.getElementById("chatList");
 const userInputEl = document.getElementById("userInput");
